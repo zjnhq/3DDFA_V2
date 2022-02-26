@@ -32,3 +32,6 @@ test_pr*.py
 demo_for_*.py
 examples/**/zou*
 examples/inputs/videos
+utils/asset/Debug/*
+utils/asset/.vs/render/v16/*
+*.pdb
