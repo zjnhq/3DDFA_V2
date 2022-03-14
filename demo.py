@@ -58,6 +58,7 @@ def main(args):
     new_suffix = f'.{args.opt}' if args.opt in ('ply', 'obj') else '.jpg'
 
     wfp = f'examples/results/{args.img_fp.split("/")[-1].replace(old_suffix, "")}_{args.opt}' + new_suffix
+    wfp = f'{args.img_fp.split("/")[-1].replace(old_suffix, "")}_{args.opt}' + new_suffix
 
     ver_lst = tddfa.recon_vers(param_lst, roi_box_lst, dense_flag=dense_flag)
 

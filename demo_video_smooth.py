@@ -54,6 +54,7 @@ def main(args):
     # run
     dense_flag = args.opt in ('2d_dense', '3d',)
     pre_ver = None
+    face_detected = False
     for i, frame in tqdm(enumerate(reader)):
         if args.start > 0 and i < args.start:
             continue
@@ -62,9 +63,13 @@ def main(args):
 
         frame_bgr = frame[..., ::-1]  # RGB->BGR
 
-        if i == 0:
+        if not face_detected:
             # detect
             boxes = face_boxes(frame_bgr)
+            if len(boxes) == 0:
+                continue
+            else:
+                face_detected = True
             boxes = [boxes[0]]
             param_lst, roi_box_lst = tddfa(frame_bgr, boxes)
             ver = tddfa.recon_vers(param_lst, roi_box_lst, dense_flag=dense_flag)[0]

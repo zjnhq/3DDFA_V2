@@ -15,7 +15,7 @@ from TDDFA import TDDFA
 from utils.render import render
 # from utils.render_ctypes import render
 from utils.functions import cv_draw_landmark
-
+from pdb import *
 
 def main(args):
     cfg = yaml.load(open(args.config), Loader=yaml.SafeLoader)
@@ -50,12 +50,17 @@ def main(args):
     # run
     dense_flag = args.opt in ('2d_dense', '3d')
     pre_ver = None
+    face_detected = False
     for i, frame in tqdm(enumerate(reader)):
         frame_bgr = frame[..., ::-1]  # RGB->BGR
 
-        if i == 0:
+        if not face_detected:
             # the first frame, detect face, here we only use the first face, you can change depending on your need
             boxes = face_boxes(frame_bgr)
+            if len(boxes) == 0:
+                continue
+            else:
+                face_detected = True
             boxes = [boxes[0]]
             param_lst, roi_box_lst = tddfa(frame_bgr, boxes)
             ver = tddfa.recon_vers(param_lst, roi_box_lst, dense_flag=dense_flag)[0]
